@@ -83,6 +83,18 @@ require_once __DIR__ . '/lib/countdown.php';
   const form = document.getElementById('dc-form');
   const base = '/api/plugin/FPP-Plugin-DailyShowCountdown/countdown/';
   let saved = null;
+  let settingsRevision = 0;
+  let saveGeneration = 0;
+  function startReady(ready) {
+    const button = root.querySelector('#dc-run');
+    button.classList.toggle('btn-outline-primary', !ready);
+    button.classList.toggle('btn-success', ready);
+    button.classList.toggle('text-white', ready);
+  }
+  function settingsEdited() {
+    settingsRevision++;
+    startReady(false);
+  }
   let previewGeneration = 0;
   const notice = (text, kind = 'info') => {
     const node = root.querySelector('#dc-notice');
@@ -160,14 +172,25 @@ require_once __DIR__ . '/lib/countdown.php';
   }
   form.addEventListener('submit', async event => {
     event.preventDefault();
+    const revision = settingsRevision;
+    const generation = ++saveGeneration;
+    startReady(false);
     try {
-      saved = await request(base + 'config', values());
+      const result = await request(base + 'config', values());
+      if (generation !== saveGeneration) return;
+      saved = result;
+      startReady(saved.enabled === true && form.elements.enabled.checked && revision === settingsRevision);
       notice('Settings saved. They will be used on the next start.', 'success');
       if (window.$ && $.jGrowl) $.jGrowl('Countdown settings saved', {themeState: 'success'});
       preview();
-    } catch (e) { notice(e.message, 'danger'); }
+    } catch (e) {
+      if (generation !== saveGeneration) return;
+      startReady(false);
+      notice(e.message, 'danger');
+    }
   });
-  form.addEventListener('change', () => { visibility(); preview(); });
+  form.addEventListener('input', settingsEdited);
+  form.addEventListener('change', () => { settingsEdited(); visibility(); preview(); });
   root.querySelector('#dc-preview-button').addEventListener('click', preview);
   root.querySelector('#dc-run').addEventListener('click', async () => {
     try {
