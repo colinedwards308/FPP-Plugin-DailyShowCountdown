@@ -4,6 +4,63 @@ A daily show countdown for a Falcon Player (FPP) LED matrix. Displays **“Show 
 
 Developed and tested on FPP 10.0 running on a Raspberry Pi 5 with a 128×96 ColorLight matrix. Other hardware may work when its FPP pixel overlay model is configured correctly; it has not been tested here.
 
+## Choose a version
+
+| Version | Best for | Requirements |
+| --- | --- | --- |
+| **`countdown-white.sh`** | A standalone, all-white countdown for your own FPP model. Easy-to-edit settings; no fixed pixel dimensions. | FPP, Bash, curl, flock, GNU date/stat, PHP CLI. No Python, Pillow, or helper file. |
+| **`countdownscript.sh`** | The advanced version with optional green/red/blue words. | Add `countdown-colors.py` and Pillow for colors. Color layout is 128×96. |
+
+Both versions support `--force`, `--status`, logging, and Ctrl+C cleanup. They intentionally share a lock, so only one countdown version runs at a time. The standalone version does not accept color flags.
+
+## Standalone white version: quick start
+
+Download **only `countdown-white.sh`** and edit the **USER SETTINGS** section at the top:
+
+```bash
+MODEL_NAME="Your Matrix Name"
+START_TIME="16:00:00"
+END_TIME="17:30:00"
+HEADING="Show begins in:"
+FONT="NimbusSans-Regular"
+FONT_SIZE=16
+```
+
+Copy the exact pixel overlay model name from FPP, including spaces and capitalization. The script URL-encodes the name automatically. Choose a font listed by your own FPP installation and adjust `FONT_SIZE` for your panel size. FPP handles centering; text is not automatically shrunk to fit, so confirm the layout on your display.
+
+Copy it to your device (replace `FPP_HOST`):
+
+```bash
+scp countdown-white.sh fpp@FPP_HOST:/home/fpp/media/scripts/
+ssh fpp@FPP_HOST
+cd /home/fpp/media/scripts
+chmod 755 countdown-white.sh
+
+# Validate settings, model and font without displaying anything.
+./countdown-white.sh --check
+
+# Run immediately, counting down to the next configured end time.
+./countdown-white.sh --force
+
+# Or override the model for this invocation without editing the file.
+./countdown-white.sh --model="Your Matrix Name" --force
+```
+
+Press **Ctrl+C** to stop and clear. For daily scheduling, select `countdown-white.sh` in a blocking FPP playlist Script entry and leave arguments empty (or use `--model="Your Matrix Name"`). Schedule the playlist to match `START_TIME` and `END_TIME`. As with the advanced version, starting normally outside the configured window exits; it does not wait for the next start time.
+
+To inspect the standalone version:
+
+```bash
+./countdown-white.sh --status
+tail -f /home/fpp/media/logs/daily-countdown-white.log
+```
+
+Its log is separate from the advanced version's log. Because the lock is shared, `--status` can report a running countdown from either version; the displayed recent log entries belong to the standalone version only. `--check` performs read-only API checks even if another countdown is running. Before display startup, it verifies that the model exists and the requested font appears in FPP's font list. This does not prove that every glyph fits or that the physical panels are working.
+
+PHP CLI is used for safe URL/JSON encoding and API response validation. It is available on the tested FPP device. If `php` is missing on another installation, install its platform's PHP CLI package. No matrix-specific channel numbers or raw pixel sizes are embedded in this version. The URL and FPP account/log paths default to a standard local FPP installation.
+
+The remaining detailed installation examples use the **advanced version**; substitute the standalone filename and its log path where appropriate, and omit color-specific dependencies and arguments.
+
 ## Features
 
 - Default countdown window: **4:00 PM–5:30 PM**, using the FPP device's local time.
@@ -20,10 +77,11 @@ Developed and tested on FPP 10.0 running on a Raspberry Pi 5 with a 128×96 Colo
 | File | Purpose |
 | --- | --- |
 | `countdownscript.sh` | Main script: arguments, timing, FPP requests, locking, logging, and cleanup. |
+| `countdown-white.sh` | Independent all-white version with editable model/time/font settings, `--model`, and read-only `--check`. |
 | `countdown-colors.py` | Pillow renderer used only for `--colors=yes`; produces one 128×96 RGB frame. |
 | `test_countdown_colors.py` | Pixel-based regression check for stable timer alignment; run on FPP with Pillow and the configured font. |
 
-Keep both files in the **same directory**. The shell script finds the renderer relative to its own location, so it can be launched from another working directory.
+Keep `countdownscript.sh` and `countdown-colors.py` in the **same directory** when using colors. The advanced shell script finds the renderer relative to its own location, so it can be launched from another working directory. `countdown-white.sh` is standalone and does not use that helper.
 
 ## Requirements
 
