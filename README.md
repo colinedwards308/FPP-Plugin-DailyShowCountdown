@@ -21,6 +21,7 @@ Developed and tested on FPP 10.0 running on a Raspberry Pi 5 with a 128×96 Colo
 | --- | --- |
 | `countdownscript.sh` | Main script: arguments, timing, FPP requests, locking, logging, and cleanup. |
 | `countdown-colors.py` | Pillow renderer used only for `--colors=yes`; produces one 128×96 RGB frame. |
+| `test_countdown_colors.py` | Pixel-based regression check for stable timer alignment; run on FPP with Pillow and the configured font. |
 
 Keep both files in the **same directory**. The shell script finds the renderer relative to its own location, so it can be launched from another working directory.
 
@@ -218,6 +219,8 @@ If changing the schedule, update both the script's times and the FPP scheduler. 
 
 White mode uses FPP's `NimbusSans-Regular` font at size 16. Color mode uses the Nimbus Sans font file through Pillow, size 16 for the heading and size 24 for the timer. Edit the renderer's `words` list to change individual word colors. To change the heading text consistently, edit both the white-mode message in the shell script and the renderer's words.
 
+The color renderer uses a fixed timer baseline derived from the full digit set, so changing numbers does not shift the whole countdown up or down. Horizontal centering uses font advance width rather than the visible bounds of the current digits.
+
 **Color mode is fixed to 128×96 pixels.** Changing matrix size requires updating the Python frame dimensions and layout, the shell's `w=128&h=96` upload parameters, and the fit checks together. Changing only the FPP model URL is not sufficient. Countdown input to the color renderer is two-digit `HH:MM:SS`.
 
 ## Troubleshooting
@@ -258,5 +261,13 @@ Stop the existing FPP playlist or foreground terminal run before starting anothe
 Check for `CLEAR black_frame_sent=yes overlay=disabled` in the log. Ensure the process actually exited rather than being paused with Ctrl+Z. Also check whether another FPP sequence, effect, or input is supplying content.
 
 ## Validation
+
+Run the alignment regression check on an FPP device with the configured font and Pillow, from a copy of this repository containing the test file:
+
+```bash
+python3 -m unittest -v test_countdown_colors.py
+```
+
+It checks that the colon pixels remain in exactly the same position across 65 timer values, including transitions involving 1 and 4. This test reproduces the vertical movement in the original renderer and passes with the fixed baseline.
 
 On the development FPP device, white and colored countdowns, out-of-window handling, duplicate prevention, and progress logging were exercised. A terminal Ctrl+C test exited with code 130, disabled the model, and left all 36,864 bytes of its 128×96 RGB buffer at zero. The color renderer was checked for green, red, blue, and white pixels within the frame boundaries. These checks do not establish compatibility with every FPP build or matrix configuration.

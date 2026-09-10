@@ -24,12 +24,15 @@ def render(countdown):
     for (word, color), width in zip(words, widths):
         draw.text((x, 45), word, font=heading_font, fill=color, anchor="ls")
         x += width + gap
-    bbox = draw.textbbox((0, 0), countdown, font=timer_font)
-    width = bbox[2] - bbox[0]
+    # Measure the advance for centering, not the changing visible glyph bounds.
+    width = draw.textlength(countdown, font=timer_font)
     if width > 124:
         raise ValueError("Countdown does not fit the matrix")
-    draw.text(((128 - width) / 2 - bbox[0], 56 - bbox[1]), countdown,
-              font=timer_font, fill="white")
+    # Derive a single baseline from the whole digit set. Individual digits have
+    # different top bearings; using their current bbox makes the line jump.
+    reference = draw.textbbox((0, 0), "0123456789:", font=timer_font, anchor="ls")
+    baseline = 56 - reference[1]
+    draw.text((64, baseline), countdown, font=timer_font, fill="white", anchor="ms")
     return frame
 
 
