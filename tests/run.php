@@ -13,6 +13,13 @@ function rejects(callable $fn, string $description): void {
     try { $fn(); } catch (InvalidArgumentException $e) { check(true, $description); return; }
     check(false, $description);
 }
+$plugin = 'FPP-Plugin-DailyShowCountdown';
+$menu = 'output';
+ob_start();
+require __DIR__ . '/../menu.inc';
+$menuHtml = ob_get_clean();
+check(count($menuEntries) === 1 && $menuEntries[0]['type'] === 'output', 'one documented output menu entry');
+check(str_contains($menuHtml, 'plugin=' . $plugin . '&amp;page=plugin_setup.php'), 'menu links to installed plugin');
 $c = defaults();
 check($c['headingColor'] === '#FFFFFF' && $c['timerColor'] === '#FFFFFF', 'existing configurations default to white');
 check(validate(['headingColor' => '#aa11bb'])['headingColor'] === '#AA11BB', 'normalize color hex');
@@ -185,6 +192,10 @@ try {
     check(!is_dir(DailyCountdown\dataDir()), 'uninstall data removed');
     check(!is_file($root . '/plugin.FPP-Plugin-DailyShowCountdown'), 'uninstall settings removed');
     check(runWorker('uninstall') === 0, 'repeat uninstall harmless');
+    $missingDataRejected = false;
+    try { DailyCountdown\writeState(['phase' => 'stopped']); }
+    catch (RuntimeException $e) { $missingDataRejected = true; }
+    check($missingDataRejected, 'status write rejects missing plugin data directory');
     echo "PASS: $checks checks (formatting, timing, settings HTTP API, process lifecycle, uninstall and mocked overlay API).\n";
 } finally {
     if (is_resource($server)) { proc_terminate($server); proc_close($server); }

@@ -96,6 +96,10 @@ function colorFrame(string $text, array $c, array $model): string
 
 function writeState(array $state): void
 {
+    // tempnam otherwise falls back to the system temp directory on failure.
+    if (!is_dir(dataDir()) || !is_writable(dataDir())) {
+        throw new \RuntimeException('Run the plugin installer to prepare its writable data directory.');
+    }
     $tmp = tempnam(dataDir(), '.state-');
     if ($tmp === false) throw new \RuntimeException('Cannot create countdown status.');
     try {

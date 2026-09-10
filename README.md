@@ -54,7 +54,8 @@ window and uses the next daily target time.
 
 ## Testing and license
 
-The isolated test suite passes 80 checks. Release/nightly installation and
+The isolated PHP test suite passes 83 checks, with additional button-state tests.
+Release/nightly installation and
 physical-display acceptance testing remain outstanding. See
 [validation notes](docs/VALIDATION.md) for details.
 
