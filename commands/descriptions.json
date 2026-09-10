@@ -1,0 +1,5 @@
+[
+  {"name": "Daily Show Countdown Start", "script": "start.sh", "args": []},
+  {"name": "Daily Show Countdown Start Now", "script": "start-now.sh", "args": []},
+  {"name": "Daily Show Countdown Stop", "script": "stop.sh", "args": []}
+]
