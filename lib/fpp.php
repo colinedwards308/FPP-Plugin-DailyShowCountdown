@@ -113,7 +113,11 @@ function writeState(array $state): void
     } finally {
         // Internal cleanup of this invocation's tempnam file, not a user-selected
         // deletion. On successful rename the temporary path no longer exists.
-        if (is_file($tmp)) unlink($tmp);
+        if (is_file($tmp) && !@unlink($tmp)) {
+            // Cleanup is best-effort: preserve the original write exception,
+            // but keep a diagnostic in the same FPP-managed runtime log.
+            logEntry('ERROR could not remove temporary status file: ' . basename($tmp));
+        }
     }
 }
 

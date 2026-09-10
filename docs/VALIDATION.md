@@ -7,7 +7,7 @@ This is a local audit, not a passing result from FPP's automated submission revi
 
 ## Passed
 
-- 86 automated assertions on the FPP device's PHP 8.4 runtime, using an isolated
+- 92 automated assertions on the FPP device's PHP 8.4 runtime, using an isolated
   temporary directory and mocked overlay requests.
 - Time formats, rounding, daily windows, overnight windows, DST day rollover,
   past event rejection, settings validation and encoding.
@@ -53,6 +53,18 @@ start physical output, or upgrade FPP.
 ## Open code/design review items
 
 ### Submission-check follow-up
+
+- Ran the current public `fpp-data/.github/scripts/lint_plugin.py` locally
+  after the cleanup/worker-guard changes: zero blockers and zero best-practice
+  findings; only the live-registration reminder remains (verified below).
+  This standalone run covers source checks; schema validation was performed
+  separately as recorded above. The hosted submission workflow must still rerun.
+- Temporary status cleanup uses best-effort `@unlink` with explicit failure
+  logging to retain diagnostics without masking the original write failure.
+  Encoding-failure tests verify cleanup and preservation of previous status.
+- The CLI entry point explicitly rejects HTTP method context as well as
+  non-CLI execution. GET and POST uninstall attempts return 404 and preserve
+  settings/runtime files; real CLI uninstall remains covered by lifecycle tests.
 
 - Committed executable permissions for install/uninstall/preStop hooks and
   the callback/command shell entry points (Git mode 100755).

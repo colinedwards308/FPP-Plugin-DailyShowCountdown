@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 use function DailyCountdown\{loadConfig, dataDir, logPath, logEntry, api, checkModel, writeState, status, requestStop, target, message};
 
-if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
+// No worker action, including uninstall, is an HTTP endpoint. Reject HTTP
+// request context explicitly even if this file is invoked through a CLI wrapper.
+if (isset($_SERVER['REQUEST_METHOD']) || PHP_SAPI !== 'cli') { http_response_code(404); exit; }
 $skipJSsettings = 1;
 require_once (getenv('FPPDIR') ?: '/opt/fpp') . '/www/common.php';
 require_once __DIR__ . '/../lib/fpp.php';

@@ -3,6 +3,11 @@ require_once __DIR__ . '/fixtures/fpp/www/common.php';
 require_once __DIR__ . '/../api.php';
 function json($value) { header('Content-Type: application/json'); return json_encode($value); }
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+if ($path === '/test/worker-uninstall') {
+    $argv = ['countdown.php', 'uninstall'];
+    require __DIR__ . '/../scripts/countdown.php';
+    return;
+}
 // Test-only route: prove the runtime writer refuses execution in a web SAPI.
 if ($path === '/test/runtime-write') {
     try {

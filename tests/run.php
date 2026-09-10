@@ -84,6 +84,14 @@ function waitRendered(): void {
     check(false, 'worker rendered');
 }
 try {
+    DailyCountdown\writeState(['phase' => 'test']);
+    $previousState = file_get_contents(DailyCountdown\dataDir() . '/status.json');
+    $encodingRejected = false;
+    try { DailyCountdown\writeState(['invalid' => NAN]); }
+    catch (JsonException $e) { $encodingRejected = true; }
+    check($encodingRejected, 'failed status encoding preserves original error');
+    check(glob(DailyCountdown\dataDir() . '/.state-*') === [], 'failed status write cleans up its temporary file');
+    check(file_get_contents(DailyCountdown\dataDir() . '/status.json') === $previousState, 'failed status write preserves previous status');
     DailyCountdown\saveConfig(array_replace($c, ['heading' => 'Show "begins" \\ soon:']));
     check(DailyCountdown\loadConfig()['heading'] === 'Show "begins" \\ soon:', 'settings encoding round trip');
     check(runWorker('start', true) === 1, 'disabled start rejected');
@@ -135,6 +143,14 @@ try {
         check(str_contains($http_response_header[0], '403') && str_contains($blocked, 'restricted to the CLI'), 'web runtime write rejected: ' . $method);
     }
     check(file_get_contents(DailyCountdown\dataDir() . '/status.json') === $stateBefore, 'web runtime write leaves status unchanged');
+    $configBefore = DailyCountdown\loadConfig();
+    foreach (['GET', 'POST'] as $method) {
+        $context = stream_context_create(['http' => ['method' => $method, 'ignore_errors' => true]]);
+        file_get_contents('http://' . $address . '/test/worker-uninstall', false, $context);
+        check(str_contains($http_response_header[0], '404'), 'worker uninstall refuses HTTP: ' . $method);
+    }
+    check(DailyCountdown\loadConfig() === $configBefore && file_get_contents(DailyCountdown\dataDir() . '/status.json') === $stateBefore,
+        'web uninstall attempts preserve settings and runtime state');
     check($get['ok'] && $get['data']['config']['model'] === 'Small Matrix', 'HTTP loads saved settings');
     $post = function ($endpoint, $body) use ($url) {
         $ctx = stream_context_create(['http' => ['method' => 'POST', 'header' => 'Content-Type: application/json', 'content' => json_encode($body), 'ignore_errors' => true]]);
