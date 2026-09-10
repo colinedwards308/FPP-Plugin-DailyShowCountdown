@@ -94,6 +94,32 @@ start physical output, or upgrade FPP.
 
 ## Acceptance test record to complete
 
+### Completed: live command registration lifecycle, FPP 10.0
+
+On 2026-09-10, tested through the same Plugin Manager endpoints used by the UI:
+`DELETE /api/plugin/FPP-Plugin-DailyShowCountdown?stream=true`, followed by
+`POST /api/plugin?stream=true` using the public repository metadata and `main`.
+Reinstalled commit `7258c56`.
+
+- Backed up the installed plugin, runtime files and saved configuration before
+  testing. Countdown was already stopped; issued Stop and verified stopped state.
+- Before uninstall: all three Daily Show Countdown commands present in
+  `GET /api/commands`.
+- After uninstall: zero countdown commands, and the plugin directory, own
+  configuration and runtime directory were removed. Declared package dependencies
+  were removed by FPP's package ownership workflow.
+- After reinstall: all three commands returned automatically; dependencies were
+  installed and the installer completed with exit code 0. Fresh defaults were
+  disabled before restoring configuration.
+- FPP's MainPID stayed `1069`, with ExecMainStartTimestampMonotonic `9960504`
+  before uninstall, after uninstall and after reinstall. No FPP restart or
+  direct manual load/unload calls were used.
+- Restored configuration through the validated settings API and compared every
+  setting with the backup. Countdown was left stopped, matching its initial state.
+
+This verifies live command registration/withdrawal on this FPP 10.0 build; it
+does not establish nightly, physical-display, or repeated-upgrade coverage.
+
 For both latest release and nightly, record the exact FPP version, platform,
 model dimensions, and results for: fresh install; repeated install; upgrade
 with saved settings preserved; enabled/disabled saves; missing-font rejection;
