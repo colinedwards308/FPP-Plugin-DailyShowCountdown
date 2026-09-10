@@ -3,6 +3,17 @@ require_once __DIR__ . '/fixtures/fpp/www/common.php';
 require_once __DIR__ . '/../api.php';
 function json($value) { header('Content-Type: application/json'); return json_encode($value); }
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+// Test-only route: prove the runtime writer refuses execution in a web SAPI.
+if ($path === '/test/runtime-write') {
+    try {
+        DailyCountdown\writeState(['phase' => 'unexpected']);
+        http_response_code(500);
+    } catch (RuntimeException $e) {
+        http_response_code(403);
+        echo $e->getMessage();
+    }
+    return;
+}
 if ($path === '/api/command') {
     header('Content-Type: text/plain; charset=utf-8');
     echo "Daily Show Countdown Stop complete\n";

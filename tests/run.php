@@ -128,6 +128,13 @@ try {
         usleep(50000);
     }
     $get = json_decode(file_get_contents($url . 'config'), true);
+    $stateBefore = file_get_contents(DailyCountdown\dataDir() . '/status.json');
+    foreach (['GET', 'POST'] as $method) {
+        $context = stream_context_create(['http' => ['method' => $method, 'ignore_errors' => true]]);
+        $blocked = file_get_contents('http://' . $address . '/test/runtime-write', false, $context);
+        check(str_contains($http_response_header[0], '403') && str_contains($blocked, 'restricted to the CLI'), 'web runtime write rejected: ' . $method);
+    }
+    check(file_get_contents(DailyCountdown\dataDir() . '/status.json') === $stateBefore, 'web runtime write leaves status unchanged');
     check($get['ok'] && $get['data']['config']['model'] === 'Small Matrix', 'HTTP loads saved settings');
     $post = function ($endpoint, $body) use ($url) {
         $ctx = stream_context_create(['http' => ['method' => 'POST', 'header' => 'Content-Type: application/json', 'content' => json_encode($body), 'ignore_errors' => true]]);

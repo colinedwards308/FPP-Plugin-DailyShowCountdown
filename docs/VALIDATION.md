@@ -7,7 +7,7 @@ This is a local audit, not a passing result from FPP's automated submission revi
 
 ## Passed
 
-- 83 automated assertions on the FPP device's PHP 8.4 runtime, using an isolated
+- 86 automated assertions on the FPP device's PHP 8.4 runtime, using an isolated
   temporary directory and mocked overlay requests.
 - Time formats, rounding, daily windows, overnight windows, DST day rollover,
   past event rejection, settings validation and encoding.
@@ -51,6 +51,17 @@ The audit did not reinstall/uninstall the live plugin, change saved settings,
 start physical output, or upgrade FPP.
 
 ## Open code/design review items
+
+### Submission-check follow-up
+
+- Committed executable permissions for install/uninstall/preStop hooks and
+  the callback/command shell entry points (Git mode 100755).
+- The flagged `unlink($tmp)` is internal cleanup of the temporary file created
+  by that same `writeState()` invocation. Added an explicit CLI-only guard;
+  web execution is rejected before file creation or deletion. Isolated HTTP
+  tests verify both GET and POST are rejected and leave status unchanged.
+- These changes still need the submission reviewer's `/recheck`; passing local
+  tests does not establish that the automated review has accepted the fix.
 
 - Guideline 8.1 recommends `PrintSetting*`/toggle helpers. The current form uses
   Bootstrap controls and an explicit Save action with atomic JSON validation;

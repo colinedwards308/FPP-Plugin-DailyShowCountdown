@@ -96,6 +96,10 @@ function colorFrame(string $text, array $c, array $model): string
 
 function writeState(array $state): void
 {
+    // Only the CLI worker publishes runtime state; HTTP endpoints read it.
+    if (PHP_SAPI !== 'cli') {
+        throw new \RuntimeException('Countdown status writes are restricted to the CLI worker.');
+    }
     // tempnam otherwise falls back to the system temp directory on failure.
     if (!is_dir(dataDir()) || !is_writable(dataDir())) {
         throw new \RuntimeException('Run the plugin installer to prepare its writable data directory.');
@@ -107,6 +111,8 @@ function writeState(array $state): void
         chmod($tmp, 0664);
         if (!rename($tmp, dataDir() . '/status.json')) throw new \RuntimeException('Cannot publish countdown status.');
     } finally {
+        // Internal cleanup of this invocation's tempnam file, not a user-selected
+        // deletion. On successful rename the temporary path no longer exists.
         if (is_file($tmp)) unlink($tmp);
     }
 }
