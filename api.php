@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/lib/fpp.php';
 
-function getEndpointsFPPCountdownAdvanced() {
+function getEndpointsFPPPluginDailyShowCountdown() {
     return [
         ['method' => 'GET', 'endpoint' => 'countdown/config', 'callback' => 'dailyCountdownSettings'],
         ['method' => 'POST', 'endpoint' => 'countdown/config', 'callback' => 'dailyCountdownSave'],

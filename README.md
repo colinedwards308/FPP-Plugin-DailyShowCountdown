@@ -16,7 +16,7 @@ configured pixel-overlay model.
 ## Getting started
 
 The plugin is published on GitHub but is not yet listed in FPP's Plugin Manager.
-Repository: [FPP-Countdown-Advanced](https://github.com/colinedwards308/FPP-Countdown-Advanced), branch `main`.
+Repository: [FPP-Plugin-DailyShowCountdown](https://github.com/colinedwards308/FPP-Plugin-DailyShowCountdown), branch `main`.
 
 After installing the plugin in FPP:
 
@@ -50,7 +50,7 @@ window and uses the next daily target time.
 - Settings changes apply to the next start. Stop and restart to apply them.
 - The countdown does not start a playlist when it finishes.
 - Hiding hours displays total minutes, for example `90:00` instead of `01:30:00`.
-- For troubleshooting, check `plugin-FPP-Countdown-Advanced.log` in FPP's logs.
+- For troubleshooting, check `plugin-FPP-Plugin-DailyShowCountdown.log` in FPP's logs.
 
 ## Testing and license
 

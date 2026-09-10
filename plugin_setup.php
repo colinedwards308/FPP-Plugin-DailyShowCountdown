@@ -81,7 +81,7 @@ require_once __DIR__ . '/lib/countdown.php';
 (() => {
   const root = document.getElementById('daily-countdown');
   const form = document.getElementById('dc-form');
-  const base = '/api/plugin/FPP-Countdown-Advanced/countdown/';
+  const base = '/api/plugin/FPP-Plugin-DailyShowCountdown/countdown/';
   let saved = null;
   let previewGeneration = 0;
   const notice = (text, kind = 'info') => {

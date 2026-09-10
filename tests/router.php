@@ -8,8 +8,8 @@ if ($path === '/api/command') {
     echo "Daily Show Countdown Stop complete\n";
     return;
 }
-foreach (getEndpointsFPPCountdownAdvanced() as $endpoint) {
-    if ($path === '/api/plugin/FPP-Countdown-Advanced/' . $endpoint['endpoint'] && $_SERVER['REQUEST_METHOD'] === $endpoint['method']) {
+foreach (getEndpointsFPPPluginDailyShowCountdown() as $endpoint) {
+    if ($path === '/api/plugin/FPP-Plugin-DailyShowCountdown/' . $endpoint['endpoint'] && $_SERVER['REQUEST_METHOD'] === $endpoint['method']) {
         echo call_user_func($endpoint['callback']);
         return;
     }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DailyCountdown;
 
-const PLUGIN = 'FPP-Countdown-Advanced';
+const PLUGIN = 'FPP-Plugin-DailyShowCountdown';
 
 function defaults(): array
 {

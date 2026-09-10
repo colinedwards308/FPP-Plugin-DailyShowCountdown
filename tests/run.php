@@ -44,7 +44,7 @@ check(target($c, $at('2026-03-07 18:00:00'), true)->format('Y-m-d H:i:s P') === 
 rejects(fn() => target(array_replace($c, ['mode' => 'event', 'eventDate' => '2026-01-01']), $at('2026-09-10'), true), 'force never rolls event date');
 
 $root = sys_get_temp_dir() . '/countdown-test-' . bin2hex(random_bytes(6));
-mkdir($root . '/plugindata/FPP-Countdown-Advanced', 0775, true);
+mkdir($root . '/plugindata/FPP-Plugin-DailyShowCountdown', 0775, true);
 mkdir($root . '/logs');
 putenv('COUNTDOWN_TEST_MEDIA=' . $root);
 putenv('FPPDIR=' . __DIR__ . '/fixtures/fpp');
@@ -115,7 +115,7 @@ try {
     fclose($socket);
     $server = proc_open([PHP_BINARY, '-S', $address, __DIR__ . '/router.php'],
         [0 => ['file', '/dev/null', 'r'], 1 => ['file', $root . '/http.log', 'a'], 2 => ['file', $root . '/http.log', 'a']], $pipes);
-    $url = 'http://' . $address . '/api/plugin/FPP-Countdown-Advanced/countdown/';
+    $url = 'http://' . $address . '/api/plugin/FPP-Plugin-DailyShowCountdown/countdown/';
     for ($i = 0; $i < 40; $i++) {
         if (@file_get_contents($url . 'config') !== false) break;
         usleep(50000);
@@ -183,7 +183,7 @@ try {
     runWorker('start', true);
     check(runWorker('uninstall') === 0, 'uninstall stops worker and removes data');
     check(!is_dir(DailyCountdown\dataDir()), 'uninstall data removed');
-    check(!is_file($root . '/plugin.FPP-Countdown-Advanced'), 'uninstall settings removed');
+    check(!is_file($root . '/plugin.FPP-Plugin-DailyShowCountdown'), 'uninstall settings removed');
     check(runWorker('uninstall') === 0, 'repeat uninstall harmless');
     echo "PASS: $checks checks (formatting, timing, settings HTTP API, process lifecycle, uninstall and mocked overlay API).\n";
 } finally {

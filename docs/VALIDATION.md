@@ -18,7 +18,7 @@
   form and menu entry. Configuration save/load and preview work through the real
   API. FPP reports all three commands registered after its plugin load API.
 - Live API integration exposed a reserved `/settings` route collision; plugin
-  routes now live under `/api/plugin/FPP-Countdown-Advanced/countdown/`.
+  routes now live under `/api/plugin/FPP-Plugin-DailyShowCountdown/countdown/`.
 - Live model inspection confirmed `isActive`, `effectRunning`, and `isLocked`
   fields; the runtime checks these before taking over a model.
 

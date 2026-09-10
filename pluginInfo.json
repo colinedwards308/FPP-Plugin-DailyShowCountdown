@@ -1,13 +1,13 @@
 {
-  "repoName": "FPP-Countdown-Advanced",
+  "repoName": "FPP-Plugin-DailyShowCountdown",
   "name": "Daily Show Countdown",
   "author": "colinedwards308",
   "description": "A matrix countdown to a daily time or event date, with separate heading/timer colors, selectable time units, preview, and start/stop commands.",
   "dependencies": {"packages": ["python3-pil", "fontconfig"]},
-  "homeURL": "https://github.com/colinedwards308/FPP-Countdown-Advanced",
-  "iconURL": "https://raw.githubusercontent.com/colinedwards308/FPP-Countdown-Advanced/main/icon.png",
-  "srcURL": "https://github.com/colinedwards308/FPP-Countdown-Advanced.git",
-  "bugURL": "https://github.com/colinedwards308/FPP-Countdown-Advanced/issues",
+  "homeURL": "https://github.com/colinedwards308/FPP-Plugin-DailyShowCountdown",
+  "iconURL": "https://raw.githubusercontent.com/colinedwards308/FPP-Plugin-DailyShowCountdown/main/icon.png",
+  "srcURL": "https://github.com/colinedwards308/FPP-Plugin-DailyShowCountdown.git",
+  "bugURL": "https://github.com/colinedwards308/FPP-Plugin-DailyShowCountdown/issues",
   "allowUpdates": 1,
   "versions": [{
     "minFPPVersion": "10.0", "maxFPPVersion": "0", "branch": "main", "sha": "",
