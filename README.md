@@ -52,6 +52,29 @@ window and uses the next daily target time.
 - Hiding hours displays total minutes, for example `90:00` instead of `01:30:00`.
 - For troubleshooting, check `plugin-FPP-Plugin-DailyShowCountdown.log` in FPP's logs.
 
+## Privacy and device changes
+
+The countdown uses local FPP APIs and FPP's existing web server. It sends no
+runtime data to external services and uses no sensors, separate network
+listeners, tunnels, or remote-access software. Its source and the source of
+its dependencies are public.
+
+FPP installs the `python3-pil` and `fontconfig` packages. Starting the countdown
+launches a background worker that exits at completion or when stopped; no boot
+service is installed. The selected overlay is activated, drawn on, and cleared.
+
+Operator settings are saved in `config/plugin.FPP-Plugin-DailyShowCountdown`.
+Runtime status, lock and stop files are in
+`plugindata/FPP-Plugin-DailyShowCountdown/`. Diagnostic logs record run times,
+target dates, model names, remaining time and errors in
+`logs/plugin-FPP-Plugin-DailyShowCountdown.log` under FPP's media directory.
+Status is overwritten each run. The plugin provides no log age limit or delete
+button; logs remain until removed manually or managed by FPP's logging tools.
+Uninstall removes the settings and runtime data after stopping the worker,
+but leaves the log and installed packages.
+
+The eight-key disclosure in `pluginInfo.json` is used by FPP's install dialog.
+
 ## Testing and license
 
 The isolated PHP test suite passes 92 checks, with additional button-state tests.
