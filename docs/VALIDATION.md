@@ -1,3 +1,27 @@
+# Listing review follow-up — 2026-09-20
+
+- Removed `fontconfig` from declared packages; retained the installer's `fc-list`
+  availability check. Only `python3-pil` is declared, avoiding the FPP 10.x
+  package-ownership uninstall issue reported by the maintainer.
+- Updated the privacy disclosure and README to match. FPP manages package
+  removal separately from the plugin's uninstall hook.
+- Removed the entire development `tests/` tree at the owner's request, including
+  the CLI test runner, HTTP router, fake FPP adapter, and button-state tests.
+  No development test harness is shipped. Production start/stop commands remain.
+- Before removing the test suite, passed 100 isolated assertions on PHP 8.4.24
+  on the FPP device, including GET
+  and POST inclusion of each shipped test file returning an empty HTTP 404.
+  Used a temporary repository copy and mocked settings/overlay APIs; did not
+  modify the installed plugin, real configuration, or physical matrix output.
+- Start Now button tests, metadata schema/URI validation, and whitespace checks
+  passed. The locally available official listing linter reported no findings.
+- Owner approved publishing these changes. `/recheck` is deferred pending
+  separate owner approval.
+
+The original audit below is historical; its dependency list, assertion count,
+and test commands describe an earlier revision. Those test files are no longer
+included in the current tree.
+
 # Submission audit — 2026-09-10
 
 Reviewed the current [plugin guidelines](https://github.com/FalconChristmas/fpp-plugin-Template/blob/master/PLUGIN_GUIDELINES.md),

@@ -3,7 +3,7 @@
   "name": "Daily Show Countdown",
   "author": "colinedwards308",
   "description": "A matrix countdown to a daily time or event date, with separate heading/timer colors, selectable time units, preview, and start/stop commands.",
-  "dependencies": {"packages": ["python3-pil", "fontconfig"]},
+  "dependencies": {"packages": ["python3-pil"]},
   "homeURL": "https://github.com/colinedwards308/FPP-Plugin-DailyShowCountdown",
   "iconURL": "https://raw.githubusercontent.com/colinedwards308/FPP-Plugin-DailyShowCountdown/main/icon.png",
   "srcURL": "https://github.com/colinedwards308/FPP-Plugin-DailyShowCountdown.git",
@@ -22,11 +22,11 @@
     "sensors": [],
     "remoteAccess": "none",
     "systemChanges": [
-      {"kind": "download", "what": "FPP installs python3-pil and fontconfig from the device's configured package repositories."},
+      {"kind": "download", "what": "FPP installs python3-pil from the device's configured package repositories."},
       {"kind": "service", "what": "Starts a background countdown worker on request; stops at completion or Stop. No boot service is installed."}
     ],
     "closedCode": false,
-    "other": "Settings are stored in config/plugin.FPP-Plugin-DailyShowCountdown. Runtime status, lock and stop files are in plugindata/FPP-Plugin-DailyShowCountdown. The plugin uses FPP's existing web server and local overlay API, including activating, drawing on and clearing the selected display model. Status is overwritten each run; logs have no plugin-defined age limit or delete button. Uninstall stops the worker and removes its settings and runtime data, but leaves its log and installed packages. Source for the plugin and its package dependencies is public."
+    "other": "Settings are stored in config/plugin.FPP-Plugin-DailyShowCountdown. Runtime status, lock and stop files are in plugindata/FPP-Plugin-DailyShowCountdown. The plugin uses FPP's existing web server and local overlay API, including activating, drawing on and clearing the selected display model. Status is overwritten each run; logs have no plugin-defined age limit or delete button. Uninstall stops the worker and removes its settings and runtime data, but leaves its log. Package removal is managed separately by FPP. Source for the plugin and its package dependencies is public."
   },
   "versions": [{
     "minFPPVersion": "10.0", "maxFPPVersion": "0", "branch": "main", "sha": "",

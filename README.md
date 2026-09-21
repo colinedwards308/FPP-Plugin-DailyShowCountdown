@@ -59,7 +59,10 @@ runtime data to external services and uses no sensors, separate network
 listeners, tunnels, or remote-access software. Its source and the source of
 its dependencies are public.
 
-FPP installs the `python3-pil` and `fontconfig` packages. Starting the countdown
+FPP installs the `python3-pil` package. The installer checks for `fc-list`,
+provided by FPP's existing `fontconfig` installation. It is not declared as a
+plugin dependency, to avoid FPP 10.x removing it and dependent media packages
+when uninstalling this plugin. Starting the countdown
 launches a background worker that exits at completion or when stopped; no boot
 service is installed. The selected overlay is activated, drawn on, and cleared.
 
@@ -71,13 +74,14 @@ target dates, model names, remaining time and errors in
 Status is overwritten each run. The plugin provides no log age limit or delete
 button; logs remain until removed manually or managed by FPP's logging tools.
 Uninstall removes the settings and runtime data after stopping the worker,
-but leaves the log and installed packages.
+but leaves the log. Package removal is managed separately by FPP.
 
 The eight-key disclosure in `pluginInfo.json` is used by FPP's install dialog.
 
 ## Testing and license
 
-The isolated PHP test suite passes 92 checks, with additional button-state tests.
+Development test harnesses and fixtures are not included in the plugin tree.
+The production start/stop commands remain available for FPP scheduling and use.
 Release/nightly installation and
 physical-display acceptance testing remain outstanding. See
 [validation notes](docs/VALIDATION.md) for details.
