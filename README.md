@@ -1,8 +1,8 @@
 # Daily Show Countdown — FPP plugin
 
 Display a countdown on your matrix to a daily show time or a one-time event.
-Configure and control it from the FPP UI. Requires FPP 10 or newer and a
-configured pixel-overlay model.
+Configure and control it from the FPP UI. Available in FPP's Plugin Manager
+under **Messaging**.
 
 ## Features
 
@@ -13,12 +13,37 @@ configured pixel-overlay model.
 - Text preview, start/stop controls, and scheduler commands.
 - Optional daily time window and completion message.
 
-## Getting started
+## Requirements
 
-The plugin is published on GitHub but is not yet listed in FPP's Plugin Manager.
-Repository: [FPP-Plugin-DailyShowCountdown](https://github.com/colinedwards308/FPP-Plugin-DailyShowCountdown), branch `main`.
+- FPP 10.x on a platform supported by the plugin's `pluginInfo.json`.
+- A configured pixel-overlay model for your matrix or other suitable display.
+- Internet access during installation to download the plugin and dependencies.
 
-After installing the plugin in FPP:
+FPP installs the required `python3-pil` package automatically. No separate
+matrix-tools plugin is required.
+
+## Installation
+
+Daily Show Countdown is included in the
+[FPP plugin list](https://github.com/FalconChristmas/fpp-data/blob/master/pluginList.json).
+
+1. Open your player's FPP web interface and go to **Content Setup → Plugins**.
+2. On the **Available** tab, search for **Daily Show Countdown**, or browse the
+   **Messaging** category.
+3. Select **Install**, review the privacy disclosure when shown, and confirm.
+4. When installation finishes, open the **Installed** tab and select **Open**
+   on the Daily Show Countdown card.
+
+Developer UI mode, a manual plugin URL, and a GitHub release download are not
+needed for normal installation. If the plugin does not appear, clear the search
+filter, reload the Plugins page, and check that your player can access GitHub
+and meets the requirements above.
+
+Already installed from the manual URL? It is the same plugin; you do not need
+to uninstall and reinstall it. Use Plugin Manager's update controls when an
+update is available.
+
+## Configuration and first countdown
 
 1. Open **Daily Show Countdown** from the plugin's **Open** button or
    **Input/Output Setup → Daily Show Countdown**.
@@ -29,6 +54,16 @@ After installing the plugin in FPP:
 
 The preview shows the text and colors, not the exact pixel layout. Check that
 the text fits your matrix. Saving settings does not start the countdown.
+
+## Updates
+
+Use FPP's Plugin Manager to check for and install updates. This plugin tracks
+the repository's `main` branch, so updates are not limited to tagged releases.
+Stop an active countdown before updating, then check your settings before
+starting it again.
+
+See [GitHub releases](https://github.com/colinedwards308/FPP-Plugin-DailyShowCountdown/releases)
+for tagged milestones and release notes.
 
 ## Schedule automatic starts
 
@@ -78,12 +113,19 @@ but leaves the log. Package removal is managed separately by FPP.
 
 The eight-key disclosure in `pluginInfo.json` is used by FPP's install dialog.
 
-## Testing and license
+## Support and validation
+
+Report problems through
+[GitHub Issues](https://github.com/colinedwards308/FPP-Plugin-DailyShowCountdown/issues).
+Include your FPP version, hardware, model dimensions, steps to reproduce, and
+relevant log messages. Remove private information before sharing logs.
 
 Development test harnesses and fixtures are not included in the plugin tree.
 The production start/stop commands remain available for FPP scheduling and use.
 Release/nightly installation and
 physical-display acceptance testing remain outstanding. See
 [validation notes](docs/VALIDATION.md) for details.
+
+## License
 
 Licensed under the [MIT License](LICENSE).
