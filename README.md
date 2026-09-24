@@ -4,9 +4,16 @@ Display a countdown on your matrix to a daily show time or a one-time event.
 Configure and control it from the FPP UI. Available in FPP's Plugin Manager
 under **Messaging**.
 
-<p align="center">
-  <img src="docs/images/daily-show-countdown-plugin-manager.png" alt="Daily Show Countdown listed in FPP Plugin Manager under Messaging, with an Install button." width="640">
-</p>
+<table>
+  <tr>
+    <td width="50%" align="center" valign="middle">
+      <a href="docs/images/daily-show-countdown-plugin-manager.png"><img src="docs/images/daily-show-countdown-plugin-manager.png" alt="Daily Show Countdown listed in FPP Plugin Manager under Messaging, with an Install button." width="100%"></a>
+    </td>
+    <td width="50%" align="center" valign="middle">
+      <a href="docs/images/daily-show-countdown-preview.png"><img src="docs/images/daily-show-countdown-preview.png" alt="Daily Show Countdown text preview showing Show begins in and a countdown, with Save settings, Start now, and Stop countdown controls." width="100%"></a>
+    </td>
+  </tr>
+</table>
 
 ## Features
 
